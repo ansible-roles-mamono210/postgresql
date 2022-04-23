@@ -4,9 +4,12 @@
     name: "{{ posgtresql_rpm }}"
     disable_gpg_check: yes
 
+- name: Disable default PostgreSQL module
+  ansible.builtin.command: dnf -qy module disable postgresql
+  changed_when: false
+
 - name: Install PostgreSQL
   ansible.builtin.dnf:
     name: "{{ item }}"
-    enablerepo: "{{ postgresql_repo }}"
     state: present
   loop: "{{ postgresql_packages }}"
