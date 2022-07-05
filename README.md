@@ -1,9 +1,9 @@
-[![](https://github.com/ansible-roles-mamono210/postgresql/workflows/build/badge.svg)](https://github.com/ansible-roles-mamono210/postgresql/actions?query=workflow%3Abuild)
+[![CircleCI](https://dl.circleci.com/status-badge/img/gh/ansible-roles-mamono210/postgresql/tree/main.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/ansible-roles-mamono210/postgresql/tree/main)
 
 Role Description
 =========
 
-Install [PostgreSQL](https://www.postgresql.org) for CentOS8.
+Install [PostgreSQL](https://www.postgresql.org) for CentOS Stream 8.
 
 Requirements
 ------------
