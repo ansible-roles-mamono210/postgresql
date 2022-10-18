@@ -10,5 +10,5 @@ galaxy_info:
   role_name: postgresql
   platforms:
     - name: EL
-      versions:
+      release:
         - 8
