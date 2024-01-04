@@ -14,6 +14,31 @@
   ansible.builtin.command: dnf -qy --nogpgcheck module disable postgresql
   changed_when: false
 
+- name: Install Core DNF Plugins
+  ansible.builtin.dnf:
+    name: dnf-plugins-core
+
+- name: Check if PowerTools repository is enabled
+  ansible.builtin.shell:
+    cmd: dnf repolist enabled | grep -qw powertools
+  register: powertools_check
+  changed_when: false
+  ignore_errors: true
+
+- name: Enable CentOS PowerTools repository
+  ansible.builtin.command:
+    cmd: dnf config-manager --set-enabled powertools
+  changed_when: powertools_check.rc != 0
+  when:
+    - ansible_distribution == "CentOS"
+    - ansible_distribution_major_version == "8"
+    - powertools_check.rc != 0
+
+- name: Install perl(IPC::Run)
+  ansible.builtin.dnf:
+    name: perl-IPC-Run
+    state: present
+
 - name: Install PostgreSQL
   ansible.builtin.dnf:
     name: "{{ item }}"
