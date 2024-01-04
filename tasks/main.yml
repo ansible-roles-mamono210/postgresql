@@ -45,3 +45,18 @@
     state: present
     disable_gpg_check: yes
   loop: "{{ postgresql_packages }}"
+
+- name: Create a new PostgreSQL database cluster(CentOS8)
+  ansible.builtin.shell:
+    cmd: "/usr/pgsql-14/bin/postgresql-14-setup initdb"  # noqa command-instead-of-shell
+  register: initdb_output
+  changed_when: "'Initializing database ... OK' in initdb_output.stdout"
+  ignore_errors: true
+  environment:
+    PGSETUP_INITDB_OPTIONS: "--encoding=UTF-8 --no-locale"
+
+- name: Start PostgreSQL server
+  ansible.builtin.systemd_service:
+    name: postgresql-14
+    state: started
+    enabled: true
