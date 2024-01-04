@@ -24,11 +24,13 @@
     - name: Check if a postgresql service is running
       ansible.builtin.debug:
         msg: "Service is running"
-      when: "'postgresql-14.service' in ansible_facts.services and ansible_facts.services['postgresql-14.service'].state == 'running'"
+      when: >
+        'postgresql-14.service' in ansible_facts.services and
+        ansible_facts.services['postgresql-14.service'].state == 'running'
 
     - name: Show postgresql service status
       ansible.builtin.debug:
-        var: ansible_facts.services['postgresql-14.service']
+        var: "ansible_facts.services['{{ postgresql_service_name }}.service']"
 
     - name: Show OS version
       ansible.builtin.debug:

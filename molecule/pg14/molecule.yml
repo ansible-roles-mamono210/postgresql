@@ -1,0 +1,26 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: docker
+platforms:
+  - name: postgresql
+    image: ${MOLECULE_IMAGE}
+    command: /sbin/init
+    privileged: true
+provisioner:
+  name: ansible
+  config_options:
+    defaults:
+      callbacks_enabled: ansible.posix.profile_tasks
+  connection_options:
+    postgresql_service_name: postgresql-14
+verifier:
+  name: ansible
+scenario:
+  test_sequence:
+    - syntax
+    - create
+    - converge
+    - idempotence
+    - verify

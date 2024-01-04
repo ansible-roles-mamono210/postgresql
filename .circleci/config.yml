@@ -29,6 +29,8 @@ jobs:
         type: string
       molecule-executor-image:
         type: string
+      molecule-scenario-name:
+        type: string
       molecule-test-image:
         type: string
     steps:
@@ -48,7 +50,7 @@ jobs:
             -v /var/run/docker.sock:/var/run/docker.sock \
             -w /tmp/$(basename "${PWD}") \
             << parameters.molecule-executor-image >> \
-            molecule test
+            molecule test --scenario-name << parameters.molecule-scenario-name >>
       - run:
           name: Show Ansible version
           command: |
@@ -95,6 +97,9 @@ workflows:
                 - 'postgresql'
               molecule-executor-image:
                 - 'ghcr.io/docker-images-mamono210/circleci-executors/molecule-docker:latest'
+              molecule-scenario-name:
+                - 'pg13'
+                - 'pg14'
               molecule-test-image:
                 - 'ghcr.io/docker-images-mamono210/ansible-test/centos-stream8:latest'
           requires:

@@ -1,0 +1,37 @@
+---
+- name: Verify
+  hosts: all
+  become: true
+
+  tasks:
+    - name: Check if PosgreSQL is installed
+      ansible.builtin.command: psql --version
+      register: psql_version
+      changed_when: false
+
+    - name: Collect service facts
+      ansible.builtin.service_facts:
+
+    - name: Check OS version
+      ansible.builtin.command: cat /etc/redhat-release
+      register: os_version
+      changed_when: false
+
+    - name: Show PostgreSQL version
+      ansible.builtin.debug:
+        var: psql_version
+
+    - name: Check if a postgresql service is running
+      ansible.builtin.debug:
+        msg: "Service is running"
+      when: >
+        'postgresql-13.service' in ansible_facts.services and
+        ansible_facts.services['postgresql-13.service'].state == 'running'
+
+    - name: Show postgresql service status
+      ansible.builtin.debug:
+        var: "ansible_facts.services['{{ postgresql_service_name }}.service']"
+
+    - name: Show OS version
+      ansible.builtin.debug:
+        var: os_version
