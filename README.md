@@ -3,7 +3,7 @@
 Role Description
 =========
 
-Install [PostgreSQL](https://www.postgresql.org) for CentOS Stream 8.
+Install [PostgreSQL](https://www.postgresql.org) for Linux.
 
 Requirements
 ------------

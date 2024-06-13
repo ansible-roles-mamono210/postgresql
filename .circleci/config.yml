@@ -101,7 +101,6 @@ workflows:
                 - 'pg13'
                 - 'pg14'
               molecule-test-image:
-                - 'ghcr.io/docker-images-mamono210/ansible-test/centos-stream8:latest'
                 - 'ghcr.io/docker-images-mamono210/ansible-test/centos-stream9:latest'
           requires:
             - ansible-lint
