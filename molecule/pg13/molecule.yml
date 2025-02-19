@@ -13,6 +13,7 @@ provisioner:
   config_options:
     defaults:
       callbacks_enabled: ansible.posix.profile_tasks
+      roles_path: "$HOME/.ansible/roles/:/tmp"
   connection_options:
     postgresql_init_cmd: '/usr/pgsql-13/bin/postgresql-13-setup initdb'
     postgresql_init_cmd_options: '--encoding=UTF-8 --no-locale'
