@@ -7,6 +7,7 @@ platforms:
   - name: postgresql
     image: ${MOLECULE_IMAGE}
     command: /sbin/init
+    pre_build_image: true
     privileged: true
 provisioner:
   name: ansible
@@ -16,6 +17,9 @@ provisioner:
       roles_path: "$HOME/.ansible/roles/:/tmp"
   connection_options:
     postgresql_service_name: postgresql-14
+  env:
+    ANSIBLE_REMOTE_TEMP: /tmp/.ansible/tmp
+    ANSIBLE_LOCAL_TEMP: /tmp/.ansible/tmp
 verifier:
   name: ansible
 scenario:
