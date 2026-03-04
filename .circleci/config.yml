@@ -98,8 +98,9 @@ workflows:
               molecule-executor-image:
                 - 'ghcr.io/docker-images-mamono210/circleci-executors/molecule-docker:latest'
               molecule-scenario-name:
-                - 'pg13'
                 - 'pg14'
+                - 'pg15'
+                - 'pg16'
               molecule-test-image:
                 - 'ghcr.io/docker-images-mamono210/ansible-test/centos-stream9:latest'
           requires:

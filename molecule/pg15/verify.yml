@@ -4,7 +4,7 @@
   become: true
 
   vars:
-    postgresql_version: "14"
+    postgresql_version: "15"
     expected_service: "postgresql-{{ postgresql_version }}"
     postgresql_service_name: "postgresql-{{ postgresql_version }}"
 

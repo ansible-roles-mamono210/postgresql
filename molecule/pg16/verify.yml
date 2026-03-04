@@ -3,8 +3,13 @@
   hosts: all
   become: true
 
+  vars:
+    postgresql_version: "16"
+    expected_service: "postgresql-{{ postgresql_version }}"
+    postgresql_service_name: "postgresql-{{ postgresql_version }}"
+
   tasks:
-    - name: Check if PosgreSQL is installed
+    - name: Check if PostgreSQL client is installed
       ansible.builtin.command: psql --version
       register: psql_version
       changed_when: false
@@ -17,16 +22,15 @@
       register: os_version
       changed_when: false
 
+    - name: Assert service is running
+      ansible.builtin.assert:
+        that:
+          - (expected_service ~ '.service') in ansible_facts.services
+          - ansible_facts.services[expected_service ~ '.service'].state == 'running'
+
     - name: Show PostgreSQL version
       ansible.builtin.debug:
         var: psql_version
-
-    - name: Check if a postgresql service is running
-      ansible.builtin.debug:
-        msg: "Service is running"
-      when: >
-        (postgresql_service_name ~ '.service') in ansible_facts.services and
-        ansible_facts.services[postgresql_service_name ~ '.service'].state == 'running'
 
     - name: Show postgresql service status
       ansible.builtin.debug:

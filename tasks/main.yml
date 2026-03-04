@@ -1,8 +1,22 @@
 ---
-- name: Install PostgreSQL RPM
+- name: Validate supported PostgreSQL version
+  ansible.builtin.assert:
+    that:
+      - postgresql_version | int in [14, 15, 16]
+    fail_msg: "Unsupported postgresql_version={{ postgresql_version }}. Supported: 14, 15, 16"
+
+- name: Build PostgreSQL variables from version
+  ansible.builtin.set_fact:
+    postgresql_init_cmd: "/usr/pgsql-{{ postgresql_version }}/bin/postgresql-{{ postgresql_version }}-setup initdb"
+    postgresql_packages:
+      - "postgresql{{ postgresql_version }}-devel"
+      - "postgresql{{ postgresql_version }}-server"
+    postgresql_service_name: "postgresql-{{ postgresql_version }}"
+
+- name: Install PostgreSQL RPM (PGDG for EL9)
   ansible.builtin.dnf:
-    name: "{{ posgtresql_rpm }}"
-    disable_gpg_check: yes
+    name: "{{ postgresql_rpm }}"
+    disable_gpg_check: true
 
 - name: Disable Repo GPG check of PostgreSQL repo
   ansible.builtin.replace:
@@ -37,24 +51,23 @@
     name: perl-IPC-Run
     state: present
 
-- name: Install PostgreSQL
+- name: Install PostgreSQL packages
   ansible.builtin.dnf:
-    name: "{{ item }}"
+    name: "{{ postgresql_packages }}"
     state: present
-    disable_gpg_check: yes
-  loop: "{{ postgresql_packages }}"
+    disable_gpg_check: true
 
-- name: Create a new PostgreSQL database cluster(CentOS8)
+- name: Create a new PostgreSQL database cluster
   ansible.builtin.shell:
-    cmd: '{{ postgresql_init_cmd }}'  # noqa command-instead-of-shell
+    cmd: "{{ postgresql_init_cmd }}"  # noqa command-instead-of-shell
   register: initdb_output
   changed_when: "'Initializing database ... OK' in initdb_output.stdout"
   ignore_errors: true
   environment:
-    PGSETUP_INITDB_OPTIONS: '{{ postgresql_init_cmd_options }}'
+    PGSETUP_INITDB_OPTIONS: "{{ postgresql_init_cmd_options }}"
 
 - name: Start PostgreSQL server
   ansible.builtin.systemd_service:
-    name: '{{ postgresql_service_name }}'
+    name: "{{ postgresql_service_name }}"
     state: started
     enabled: true

@@ -8,4 +8,4 @@
   roles:
     - role: postgresql
       vars:
-        postgresql_version: 14
+        postgresql_version: 16

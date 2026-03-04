@@ -6,4 +6,6 @@
   vars:
     ansible_user: ansible
   roles:
-    - postgresql
+    - role: postgresql
+      vars:
+        postgresql_version: 15
