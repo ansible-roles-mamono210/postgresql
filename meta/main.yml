@@ -3,7 +3,7 @@ dependencies: []
 galaxy_info:
   author: mamono210
   company: no name
-  description: PostgreSQL installation for Linux.
+  description: PostgreSQL installation for CentOS Stream.
   galaxy_tags: []
   license: "license (BSD, MIT)"
   min_ansible_version: 13.4.0
